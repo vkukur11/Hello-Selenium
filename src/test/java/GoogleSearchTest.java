@@ -29,10 +29,9 @@ public class GoogleSearchTest {
 
     @Test(priority = 2)
     private void isIncludeEachResultQueryWord() {
-        List<WebElement> queryResults = query.getAllResults();
-        for (WebElement queryResult: queryResults) {
-            String resultText = queryResult.findElement(By.tagName("h3")).getText();
-            assertTrue(resultText.toLowerCase().contains(QUERY_STRING.toLowerCase()));
+        List<WebElement> queryH3Results = query.getAllResults();
+        for (WebElement queryH3Result: queryH3Results) {
+            assertTrue(queryH3Result.getText().toLowerCase().contains(QUERY_STRING.toLowerCase()));
         }
     }
 

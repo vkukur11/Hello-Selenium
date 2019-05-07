@@ -33,16 +33,7 @@ public class Query {
     }
 
     public List<WebElement> getAllResults() {
-        List<WebElement> results = browser.findElements(By.className("r"));
-
-        Iterator<WebElement> i = results.iterator();
-        while (i.hasNext()) {
-            WebElement result = i.next();
-            if(result.getTagName().equals("h3")) {
-                i.remove();
-            }
-        }
-        return results;
+        return browser.findElements(By.cssSelector(".h3, .LC20lb"));
     }
 
     public void close() {
