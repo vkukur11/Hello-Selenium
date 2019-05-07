@@ -9,31 +9,31 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Query {
-    private WebDriver driver;
+    private WebDriver browser;
 
     public Query() {
-        driver = new ChromeDriver();
+        browser = new ChromeDriver();
     }
 
     public String getPage() {
-        return driver.getPageSource();
+        return browser.getPageSource();
     }
 
     public void openGoogle() {
-        driver.get("https://www.google.ru/");
+        browser.get("https://www.google.ru/");
     }
 
     public void search(String query) {
-        WebElement queryString = driver.findElement(By.name("q"));
+        WebElement queryString = browser.findElement(By.name("q"));
         queryString.sendKeys(query);
 
-        WebElement queryButton = driver.findElement(By.name("btnK"));
+        WebElement queryButton = browser.findElement(By.name("btnK"));
         queryButton.submit();
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("r")));
+        (new WebDriverWait(browser, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("r")));
     }
 
     public List<WebElement> getAllResults() {
-        List<WebElement> results = driver.findElements(By.className("r"));
+        List<WebElement> results = browser.findElements(By.className("r"));
 
         Iterator<WebElement> i = results.iterator();
         while (i.hasNext()) {
@@ -46,6 +46,6 @@ public class Query {
     }
 
     public void close() {
-        driver.close();
+        browser.close();
     }
 }
