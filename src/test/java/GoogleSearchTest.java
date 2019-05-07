@@ -1,49 +1,43 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class GoogleSearchTest {
-    private WebDriver driver;
+    private static final String QUERY_STRING = "Java";
+
+    private Query query;
 
     @BeforeSuite
-    public void doQuery() {
-        driver = new ChromeDriver();
-        driver.get("https://www.google.ru/");
-        WebElement queryString = driver.findElement(By.name("q"));
-        queryString.sendKeys("Java");
-
-
-
-        WebElement queryButton = driver.findElement(By.name("btnK"));
-        queryButton.submit();
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.className("r")));
+    public void setUp() {
+        query = new Query();
+        query.openGoogle();
     }
 
-    @Test
+    @Test(priority = 1)
+    private void isPageChangedTest() {
+        String pageBeforeQuery = query.getPage();
+        query.search(QUERY_STRING);
+        String pageAfterQuery = query.getPage();
+        assertNotEquals(pageBeforeQuery, pageAfterQuery);
+    }
+
+    @Test(priority = 2)
     private void isIncludeEachResultQueryWord() {
-        List<WebElement> queryResults = driver.findElements(By.className("r"));
-        for (WebElement result: queryResults) {
-            //Subresults also marked as "r" class
-            if(result.getTagName().equals("h3")) {
-                continue;
-            }
-            String resultText = result.findElement(By.tagName("h3")).getText();
-            assertTrue(resultText.toLowerCase().contains("java"));
+        List<WebElement> queryResults = query.getAllResults();
+        for (WebElement queryResult: queryResults) {
+            String resultText = queryResult.findElement(By.tagName("h3")).getText();
+            assertTrue(resultText.toLowerCase().contains(QUERY_STRING.toLowerCase()));
         }
     }
 
     @AfterSuite
     public void closeDriver() {
-        driver.close();
+        query.close();
     }
 }
