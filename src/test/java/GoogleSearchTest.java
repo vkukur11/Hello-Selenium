@@ -1,8 +1,5 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.List;
 
@@ -13,13 +10,13 @@ public class GoogleSearchTest {
 
     private Query query;
 
-    @BeforeSuite
+    @BeforeClass
     public void setUp() {
         query = new Query();
         query.openGoogle();
     }
 
-    @Test(priority = 1)
+    @Test
     private void isPageChangedTest() {
         String pageBeforeQuery = query.getPage();
         query.search(QUERY_STRING);
@@ -27,7 +24,7 @@ public class GoogleSearchTest {
         assertNotEquals(pageBeforeQuery, pageAfterQuery);
     }
 
-    @Test(priority = 2)
+    @Test(dependsOnMethods = "isPageChangedTest")
     private void isIncludeEachResultQueryWord() {
         List<WebElement> queryH3Results = query.getAllResults();
         for (WebElement queryH3Result: queryH3Results) {
@@ -35,7 +32,7 @@ public class GoogleSearchTest {
         }
     }
 
-    @AfterSuite
+    @AfterClass
     public void closeDriver() {
         query.close();
     }
