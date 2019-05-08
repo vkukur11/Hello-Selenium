@@ -14,7 +14,6 @@ public class GoogleSearchTest {
 
     @BeforeClass
     public void setUp() {
-//        googleStartPage = PageFactory.initElements(new ChromeDriver(), GoogleStartPage.class);
         googleStartPage = new GoogleStartPage(new ChromeDriver());
     }
 
