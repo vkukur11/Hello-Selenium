@@ -14,13 +14,14 @@ public class GoogleSearchTest {
 
     @BeforeClass
     public void setUp() {
+//        googleStartPage = PageFactory.initElements(new ChromeDriver(), GoogleStartPage.class);
         googleStartPage = new GoogleStartPage(new ChromeDriver());
     }
 
     @Test
     private void isPageChangedTest() {
         String pageBeforeQuery = googleStartPage.getPage();
-        googleResultPage = new GoogleResultPage(googleStartPage.invokeSearch(QUERY_STRING));
+        googleResultPage = googleStartPage.invokeSearch(QUERY_STRING);
         String pageAfterQuery = googleResultPage.getPage();
         assertNotEquals(pageBeforeQuery, pageAfterQuery);
     }
